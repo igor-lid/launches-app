@@ -15,9 +15,7 @@ const Header: FC<IHeaderProps> = ({ handleNextMonth, handlePreviousMonth, select
   return (
     <header>
       <div className="flex justify-between p-4">
-        <h1>
-          Current Month: <span className="font-bold">{formattedDate}</span>
-        </h1>
+        <h1 className="font-bold">{formattedDate}</h1>
         <div>
           <button onClick={handlePreviousMonth} className="mr-4">
             Previous month

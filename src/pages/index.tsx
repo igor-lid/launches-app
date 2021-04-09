@@ -1,13 +1,13 @@
 import { FC } from 'react';
 
-import Calendar from '../components/launches/calendar';
+import LaunchesCalendar from '../components/launches/calendar';
 
 const Home: FC = (): JSX.Element => {
   return (
-    <main className="h-full flex overflow-hidden">
+    <main className="h-screen max-h-screen flex overflow-hidden">
       {/* Launches Calendar */}
       <section className="flex flex-col h-full flex-1 overflow-y-auto">
-        <Calendar />
+        <LaunchesCalendar />
       </section>
     </main>
   );
