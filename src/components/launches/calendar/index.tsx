@@ -15,7 +15,8 @@ import Header from './Header';
 const renderEvents = (
   launches: Partial<ILaunch[]>,
   day: Date,
-  setSelectedLaunch: Dispatch<SetStateAction<ILaunch>>
+  setSelectedLaunch: Dispatch<SetStateAction<ILaunch>>,
+  selectedLaunch: ILaunch | null
 ) => {
   const l = launches
     .filter((launch) => {
@@ -24,7 +25,14 @@ const renderEvents = (
       return isEqual(launchDate, currentDate);
     })
     .map((launch) => {
-      return <Event key={launch.id} launch={launch} setSelectedLaunch={setSelectedLaunch} />;
+      return (
+        <Event
+          key={launch.id}
+          launch={launch}
+          setSelectedLaunch={setSelectedLaunch}
+          selectedLaunch={selectedLaunch}
+        />
+      );
     });
 
   if (l.length > 0) {
@@ -32,17 +40,22 @@ const renderEvents = (
   } else
     return (
       <div className="flex items-end justify-center w-full h-full">
-        <p>There is no scheduled launches for this day</p>
+        <p className="text-sm">There are no scheduled launches for this day</p>
       </div>
     );
 };
 
 interface ICalendarProps {
   launches: ILaunch[];
+  selectedLaunch: ILaunch | null;
   setSelectedLaunch: Dispatch<SetStateAction<ILaunch>>;
 }
 
-const Calendar: FC<ICalendarProps> = ({ launches, setSelectedLaunch }): JSX.Element => {
+const Calendar: FC<ICalendarProps> = ({
+  launches,
+  setSelectedLaunch,
+  selectedLaunch
+}): JSX.Element => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [calendar, setCalendar] = useState([]);
 
@@ -74,7 +87,7 @@ const Calendar: FC<ICalendarProps> = ({ launches, setSelectedLaunch }): JSX.Elem
           <Fragment key={index}>
             {week.map((day) => (
               <Cell key={day.toString()} day={day}>
-                {renderEvents(launches, day, setSelectedLaunch)}
+                {renderEvents(launches, day, setSelectedLaunch, selectedLaunch)}
               </Cell>
             ))}
           </Fragment>

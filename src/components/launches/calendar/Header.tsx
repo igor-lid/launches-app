@@ -1,6 +1,8 @@
 import { format } from 'date-fns';
 import { FC } from 'react';
 
+import { ChevronLeftIcon, ChevronRightIcon } from '../../icons';
+
 const WEEK_DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
 interface IHeaderProps {
@@ -16,11 +18,13 @@ const Header: FC<IHeaderProps> = ({ handleNextMonth, handlePreviousMonth, select
     <header>
       <div className="flex justify-between p-4">
         <h1 className="font-bold">{formattedDate}</h1>
-        <div>
+        <div className="flex items-center justify-center">
           <button onClick={handlePreviousMonth} className="mr-4">
-            Previous month
+            <ChevronLeftIcon />
           </button>
-          <button onClick={handleNextMonth}>Next month</button>
+          <button onClick={handleNextMonth}>
+            <ChevronRightIcon />
+          </button>
         </div>
       </div>
 
