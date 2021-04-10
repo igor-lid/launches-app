@@ -31,7 +31,7 @@ const Time: FC<ITimeProps> = ({ time, label }): JSX.Element => {
 };
 
 const Divider: FC = (): JSX.Element => {
-  return <span className="font-bold text-2xl">:</span>;
+  return <span className="font-bold text-2xl hidden 2xl:block">:</span>;
 };
 
 interface ITimerProps {
@@ -39,7 +39,8 @@ interface ITimerProps {
 }
 
 const Timer: FC<ITimerProps> = ({ endDate }) => {
-  const [timeLeft, setTimeLeft] = useState(() => calculateTimeLeft(new Date(), endDate));
+  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(new Date(), endDate));
+  console.log(timeLeft);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -50,11 +51,11 @@ const Timer: FC<ITimerProps> = ({ endDate }) => {
   });
 
   return (
-    <div className="flex mt-4 justify-between">
-      <span className="font-bold text-2xl">T{isPast(endDate) ? '+' : '-'}</span>
+    <div className="flex flex-col 2xl:flex-row mb-4 justify-between">
+      <span className="font-bold text-2xl text-center">T{isPast(endDate) ? '+' : '-'}</span>
       <Time time={timeLeft.years} label="Years" />
       <Divider />
-      <Time time={timeLeft.years} label="Months" />
+      <Time time={timeLeft.months} label="Months" />
       <Divider />
       <Time time={timeLeft.days} label="Days" />
       <Divider />

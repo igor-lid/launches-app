@@ -7,4 +7,10 @@ export interface ILaunch {
     name: string;
   };
   image: string;
+  pad: {
+    name: string;
+    location: {
+      name: string;
+    };
+  };
 }

@@ -1,6 +1,7 @@
 import { isEqual } from 'date-fns';
-import { FC, Fragment, useEffect, useState } from 'react';
+import { Dispatch, FC, Fragment, SetStateAction, useEffect, useState } from 'react';
 
+import { useLaunches } from '../../../hooks/useLaunches';
 import { ILaunch } from '../../../types';
 import {
   addMonthsToDate,
@@ -13,7 +14,7 @@ import Cell from './Cell';
 import Header from './Header';
 
 const renderEvents = (launches: Partial<ILaunch[]>, day: Date) => {
-  const l = launches
+  const launchesPerDay = launches
     .filter((launch) => {
       const launchDate = setDateTimeToZero(new Date(launch.net));
       const currentDate = setDateTimeToZero(day);
@@ -23,8 +24,8 @@ const renderEvents = (launches: Partial<ILaunch[]>, day: Date) => {
       return <Event key={launch.id} launch={launch} />;
     });
 
-  if (l.length > 0) {
-    return l;
+  if (launchesPerDay.length > 0) {
+    return launchesPerDay;
   } else
     return (
       <div className="flex items-end justify-center w-full h-full">
@@ -35,23 +36,37 @@ const renderEvents = (launches: Partial<ILaunch[]>, day: Date) => {
 
 interface ICalendarProps {
   launches: ILaunch[];
+  selectedDate: Date;
+  setSelectedDate: Dispatch<SetStateAction<Date>>;
 }
 
-const Calendar: FC<ICalendarProps> = ({ launches }): JSX.Element => {
-  const [selectedDate, setSelectedDate] = useState(new Date());
+const Calendar: FC<ICalendarProps> = ({ launches, selectedDate, setSelectedDate }): JSX.Element => {
   const [calendar, setCalendar] = useState([]);
+  const [counter, setCounter] = useState<number>(0);
+  const { fetchRemoteLaunches } = useLaunches();
 
   // create calendar after month is changed
   useEffect(() => {
     setCalendar(createCalendar(selectedDate));
   }, [selectedDate]);
 
+  // fetch launches on 3 month change
+  useEffect(() => {
+    console.log('FETCH NEW LAUNCHES');
+    if (counter === -3 || counter === 3) {
+      fetchRemoteLaunches(selectedDate);
+      setCounter(0);
+    }
+  }, [selectedDate]);
+
   const handleNextMonth = (): void => {
     setSelectedDate(addMonthsToDate(selectedDate, 1));
+    setCounter(counter + 1);
   };
 
   const handlePreviousMonth = (): void => {
     setSelectedDate(subMonthsFromDate(selectedDate, 1));
+    setCounter(counter - 1);
   };
 
   const getNumberOfRows = (): string => `grid-rows-${calendar.flat().length / 7}`;

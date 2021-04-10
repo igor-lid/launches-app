@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import FullScreenLoader from '../components/FullScreenLoader';
 import LaunchesCalendar from '../components/launches/calendar';
@@ -8,6 +8,7 @@ import { useLaunches } from '../hooks/useLaunches';
 import { getCurrentDate } from '../utils/date';
 
 const Home: FC = (): JSX.Element => {
+  const [selectedDate, setSelectedDate] = useState(() => new Date());
   const { selectedLaunch, setLaunch, launches, status, fetchRemoteLaunches } = useLaunches();
 
   useEffect(() => {
@@ -31,7 +32,11 @@ const Home: FC = (): JSX.Element => {
 
       {/* Launches Calendar */}
       <section className="flex flex-col h-full flex-1 overflow-y-auto">
-        <LaunchesCalendar launches={launches} />
+        <LaunchesCalendar
+          launches={launches}
+          selectedDate={selectedDate}
+          setSelectedDate={setSelectedDate}
+        />
       </section>
     </main>
   );
