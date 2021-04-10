@@ -1,41 +1,27 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect } from 'react';
 
 import FullScreenLoader from '../components/FullScreenLoader';
 import LaunchesCalendar from '../components/launches/calendar';
 import LaunchDetails from '../components/launches/details';
 import LeftAside from '../components/LeftAside';
-import { launches as launchesData } from '../data/mock/launches';
-import { ILaunch } from '../types';
-
-const getLaunchesFromAPIMock = (): Promise<ILaunch[]> => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve(launchesData.results);
-    }, 4000);
-  });
-};
+import { useLaunches } from '../hooks/useLaunches';
+import { getCurrentDate } from '../utils/date';
 
 const Home: FC = (): JSX.Element => {
-  const [launches, setLaunches] = useState<ILaunch[]>([]);
-  const [selectedLaunch, setSelectedLaunch] = useState<ILaunch>(null);
-  const [loading, setLoading] = useState(false);
+  const { selectedLaunch, setLaunch, launches, status, fetchRemoteLaunches } = useLaunches();
 
   useEffect(() => {
-    setLoading(true);
-    getLaunchesFromAPIMock().then((result) => {
-      setLaunches(result);
-      setLoading(false);
-    });
+    fetchRemoteLaunches(getCurrentDate());
   }, []);
 
   const closeDetailsAside = () => {
-    setSelectedLaunch(null);
+    setLaunch(null);
   };
 
-  if (loading) return <FullScreenLoader />;
+  if (status === 'loading') return <FullScreenLoader />;
 
   return (
-    <main className="h-screen flex overflow-hidden">
+    <main className="h-full flex overflow-hidden">
       {/* Launch details */}
       {selectedLaunch && (
         <LeftAside onClose={closeDetailsAside}>
@@ -45,11 +31,7 @@ const Home: FC = (): JSX.Element => {
 
       {/* Launches Calendar */}
       <section className="flex flex-col h-full flex-1 overflow-y-auto">
-        <LaunchesCalendar
-          launches={launches}
-          setSelectedLaunch={setSelectedLaunch}
-          selectedLaunch={selectedLaunch}
-        />
+        <LaunchesCalendar launches={launches} />
       </section>
     </main>
   );

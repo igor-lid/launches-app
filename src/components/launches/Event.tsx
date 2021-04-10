@@ -1,30 +1,23 @@
 import classNames from 'classnames';
 import { Dispatch, FC, SetStateAction } from 'react';
 
-import { useAppDispatch } from '../../store';
-import { setSelectedLaunch } from '../../store/slices/launchesSlice';
+import { useLaunches } from '../../hooks/useLaunches';
 import { ILaunch } from '../../types';
 import { RocketIcon } from '../icons';
 
 interface ILaunchProps {
   launch: ILaunch;
   setSelectedLaunch?: Dispatch<SetStateAction<ILaunch>>;
-  selectedLaunch: ILaunch | null;
+  selectedLaunch?: ILaunch | null;
 }
 
-export const Event: FC<ILaunchProps> = ({ launch, selectedLaunch }) => {
+export const Event: FC<ILaunchProps> = ({ launch }) => {
   const { name, status } = launch;
-  const dispatch = useAppDispatch();
-
-  console.log(dispatch);
-
-  const handleClickOnEvent = () => {
-    dispatch(setSelectedLaunch(launch));
-  };
+  const { setLaunch, selectedLaunch } = useLaunches();
 
   return (
     <button
-      onClick={handleClickOnEvent}
+      onClick={() => setLaunch(launch)}
       className={classNames(
         'text-left cursor-pointer rounded-xl w-full px-2 py-2 text-sm mb-1 flex items-baseline focus:outline-none',
         {

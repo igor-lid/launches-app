@@ -1,5 +1,5 @@
 import { isEqual } from 'date-fns';
-import { Dispatch, FC, Fragment, SetStateAction, useEffect, useState } from 'react';
+import { FC, Fragment, useEffect, useState } from 'react';
 
 import { ILaunch } from '../../../types';
 import {
@@ -12,12 +12,7 @@ import Event from '../Event';
 import Cell from './Cell';
 import Header from './Header';
 
-const renderEvents = (
-  launches: Partial<ILaunch[]>,
-  day: Date,
-  setSelectedLaunch: Dispatch<SetStateAction<ILaunch>>,
-  selectedLaunch: ILaunch | null
-) => {
+const renderEvents = (launches: Partial<ILaunch[]>, day: Date) => {
   const l = launches
     .filter((launch) => {
       const launchDate = setDateTimeToZero(new Date(launch.net));
@@ -25,14 +20,7 @@ const renderEvents = (
       return isEqual(launchDate, currentDate);
     })
     .map((launch) => {
-      return (
-        <Event
-          key={launch.id}
-          launch={launch}
-          setSelectedLaunch={setSelectedLaunch}
-          selectedLaunch={selectedLaunch}
-        />
-      );
+      return <Event key={launch.id} launch={launch} />;
     });
 
   if (l.length > 0) {
@@ -47,15 +35,9 @@ const renderEvents = (
 
 interface ICalendarProps {
   launches: ILaunch[];
-  selectedLaunch: ILaunch | null;
-  setSelectedLaunch: Dispatch<SetStateAction<ILaunch>>;
 }
 
-const Calendar: FC<ICalendarProps> = ({
-  launches,
-  setSelectedLaunch,
-  selectedLaunch
-}): JSX.Element => {
+const Calendar: FC<ICalendarProps> = ({ launches }): JSX.Element => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [calendar, setCalendar] = useState([]);
 
@@ -87,7 +69,7 @@ const Calendar: FC<ICalendarProps> = ({
           <Fragment key={index}>
             {week.map((day) => (
               <Cell key={day.toString()} day={day}>
-                {renderEvents(launches, day, setSelectedLaunch, selectedLaunch)}
+                {renderEvents(launches, day)}
               </Cell>
             ))}
           </Fragment>

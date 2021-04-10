@@ -1,6 +1,8 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+import { getLaunchesFromAPIInterval } from '../../services/launches';
 import { ILaunch } from '../../types';
+import { RootState } from '../index';
 
 export interface ILaunchesState {
   launches: ILaunch[] | null;
@@ -14,6 +16,14 @@ const initialState: ILaunchesState = {
   status: 'idle'
 };
 
+export const fetchLaunches = createAsyncThunk<ILaunch[], Date>(
+  'launches/fetchLaunches',
+  async (date) => {
+    const response = await getLaunchesFromAPIInterval(date);
+    return response.data.results;
+  }
+);
+
 export const launchesSlice = createSlice({
   name: 'launches',
   initialState,
@@ -21,9 +31,24 @@ export const launchesSlice = createSlice({
     setSelectedLaunch: (state, action: PayloadAction<ILaunch>) => {
       state.selectedLaunch = action.payload;
     }
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchLaunches.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(fetchLaunches.fulfilled, (state, action) => {
+        state.launches = action.payload;
+        state.status = 'idle';
+      })
+      .addCase(fetchLaunches.rejected, (state) => {
+        state.status = 'failed';
+      });
   }
 });
 
 export const { setSelectedLaunch } = launchesSlice.actions;
+
+export const launchesSelector = (state: RootState) => state.launches;
 
 export default launchesSlice.reducer;
