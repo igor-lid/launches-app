@@ -6,7 +6,7 @@ class Document extends NextDocument {
     return (
       <Html>
         <Head>
-          <title>Example app</title>
+          <title>Orbital Launches</title>
           <link rel="preconnect" href="https://fonts.gstatic.com" />
           <link
             href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap"
