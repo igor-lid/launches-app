@@ -43,4 +43,4 @@ $ yarn start
 
 ## Demo
 Link to the project
-*
+* https://competent-stonebraker-26ce85.netlify.app/
