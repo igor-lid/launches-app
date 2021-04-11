@@ -2,6 +2,7 @@ import { useAppDispatch, useAppSelector } from '../store';
 import { fetchLaunches, launchesSelector, setSelectedLaunch } from '../store/slices/launchesSlice';
 import { ILaunch } from '../types';
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const useLaunches = () => {
   const dispatch = useAppDispatch();
   const { selectedLaunch, launches, status } = useAppSelector(launchesSelector);

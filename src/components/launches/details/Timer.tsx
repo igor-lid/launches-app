@@ -40,7 +40,6 @@ interface ITimerProps {
 
 const Timer: FC<ITimerProps> = ({ endDate }) => {
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(new Date(), endDate));
-  console.log(timeLeft);
 
   useEffect(() => {
     const timer = setTimeout(() => {

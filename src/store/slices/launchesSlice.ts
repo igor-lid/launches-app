@@ -49,6 +49,6 @@ export const launchesSlice = createSlice({
 
 export const { setSelectedLaunch } = launchesSlice.actions;
 
-export const launchesSelector = (state: RootState) => state.launches;
+export const launchesSelector = (state: RootState): ILaunchesState => state.launches;
 
 export default launchesSlice.reducer;

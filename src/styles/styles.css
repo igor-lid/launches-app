@@ -11,7 +11,7 @@ html {
 }
 
 #__next {
-    height: 100%;
+  height: 100%;
 }
 
 @keyframes loader-rotate {
@@ -25,4 +25,8 @@ html {
 .loader {
   border-right-color: transparent;
   animation: loader-rotate 1s linear infinite;
+}
+
+.grid-launches {
+  grid-auto-rows: 1fr;
 }

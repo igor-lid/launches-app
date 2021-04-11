@@ -1,9 +1,9 @@
+import { format } from 'date-fns';
 import { FC, useEffect, useState } from 'react';
 
 import { ILaunch } from '../../../types';
 import Loader from '../../Loader';
 import Timer from './Timer';
-import { format } from 'date-fns';
 
 interface ILaunchDetailsProps {
   selectedLaunch: ILaunch;

@@ -52,7 +52,6 @@ const Calendar: FC<ICalendarProps> = ({ launches, selectedDate, setSelectedDate 
 
   // fetch launches on 3 month change
   useEffect(() => {
-    console.log('FETCH NEW LAUNCHES');
     if (counter === -3 || counter === 3) {
       fetchRemoteLaunches(selectedDate);
       setCounter(0);
@@ -79,7 +78,7 @@ const Calendar: FC<ICalendarProps> = ({ launches, selectedDate, setSelectedDate 
         selectedDate={selectedDate}
       />
       {/* GRID */}
-      <div className={`grid grid-cols-7 ${getNumberOfRows()} flex-1`}>
+      <div className={`grid-launches grid grid-cols-7 ${getNumberOfRows()} flex-1`}>
         {calendar.map((week: Date[], index) => (
           <Fragment key={index}>
             {week.map((day) => (

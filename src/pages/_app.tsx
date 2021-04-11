@@ -9,7 +9,7 @@ import { store } from '../store';
 const App: FC<AppProps> = ({ Component, pageProps }): JSX.Element => {
   return (
     <Provider store={store}>
-      <Component {...pageProps} />;
+      <Component {...pageProps} />
     </Provider>
   );
 };
